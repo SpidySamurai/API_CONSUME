@@ -1,4 +1,5 @@
-const CAT_API = "https://api.thecatapi.com/v1/images/search?limit=3";
+const CAT_API =
+  "https://api.thecatapi.com/v1/images/search?limit=3&api_key=8b8d2f7c-74e4-47cd-83c2-b03ee2c82027";
 //query parameter, you can request 1, and more data objects
 
 fetch(CAT_API)
