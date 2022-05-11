@@ -8,11 +8,37 @@
     <title>Random cats</title>
   </head>
   <body>
-    <h1>Random cats</h1>
-    <img id="img-container-1" alt="cat 1" loading="lazy" />
-    <img id="img-container-2" alt="cat 2" loading="lazy" />
-    <img id="img-container-3" alt="cat 3" loading="lazy" />
-    <button onClick="onClickFetch()">Refresh cat</button>
+    <h1>API CONSUME BASICS</h1>
+    <button onClick="loadRandomCats()">Refresh cat</button>
+
+    <section class="randomCats" id="randomCats">
+      <h2>Random cats</h2>
+      <div class="randomCats__imgs">
+        <article>
+          <img id="img-container-1" alt="cat 1" loading="lazy" />
+          <button>Guardar en favoritos</button>
+        </article>
+        <article>
+          <img id="img-container-2" alt="cat 2" loading="lazy" />
+          <button>Guardar en favoritos</button>
+        </article>
+        <article>
+          <img id="img-container-3" alt="cat 3" loading="lazy" />
+          <button>Guardar en favoritos</button>
+        </article>
+      </div>
+    </section>
+
+    <section class="favoriteCats">
+      <h2>Favorite cats</h2>
+      <div class="favoriteCats__imgs">
+        <article>
+          <img id="img-container-3" alt="cat 3" loading="lazy" />
+          <button>Quitar de favoritos</button>
+        </article>
+      </div>
+    </section>
+
     <script src="./main.js"></script>
   </body>
 </html>
