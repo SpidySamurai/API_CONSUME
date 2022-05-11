@@ -2,20 +2,101 @@ const CAT_API = "https://api.thecatapi.com/v1/";
 const API_KEY = "8b8d2f7c-74e4-47cd-83c2-b03ee2c82027";
 //query parameter, you can request 1, and more data objects
 
+const error = document.getElementById("error");
+
 const loadRandomCats = async () => {
   const response = await fetch(
     `${CAT_API}images/search?limit=3&api_key${API_KEY}`
   );
   const data = await response.json();
 
-  const img1 = document.getElementById("img-container-1");
-  img1.src = data[0].url;
+  if (response.status === 200) {
+    console.log(data);
+    const favouriteCats = document.querySelector(".randomCats__cards");
+    favouriteCats.innerHTML = "";
+    data.forEach((cat) => {
+      const catArticle = document.createElement("article");
 
-  const img2 = document.getElementById("img-container-2");
-  img2.src = data[1].url;
+      const catImg = document.createElement("img");
+      catImg.width = 350;
+      catImg.src = cat.url;
 
-  const img3 = document.getElementById("img-container-3");
-  img3.src = data[2].url;
+      const catBtn = document.createElement("button");
+      const btnText = document.createTextNode("Guardar en favoritos");
+      catBtn.onclick = () => addCatToFav(cat.id);
+      catBtn.appendChild(btnText);
+
+      catArticle.appendChild(catImg);
+      catArticle.appendChild(catBtn);
+
+      favouriteCats.appendChild(catArticle);
+    });
+  } else {
+    error.innerHTML = "Hubo un error en random " + response.status;
+  }
+};
+
+const loadFavouriteCats = async () => {
+  const response = await fetch(`${CAT_API}favourites?api_key=${API_KEY}`);
+  const data = await response.json();
+
+  if (response.status === 200) {
+  } else {
+    error.innerHTML = "Hubo un error en favourites " + response.status;
+  }
+
+  const favouriteCats = document.querySelector(".favouriteCats__cards");
+  favouriteCats.innerHTML = "";
+  data.forEach((cat) => {
+    const catArticle = document.createElement("article");
+    const catImg = document.createElement("img");
+    const catBtn = document.createElement("button");
+    const btnText = document.createTextNode("Quitar de favoritos");
+    catImg.src = cat.image.url;
+    catBtn.onclick = () => removeCatfromFav(cat.id);
+
+    catBtn.appendChild(btnText);
+    catArticle.appendChild(catImg);
+    catArticle.appendChild(catBtn);
+
+    favouriteCats.appendChild(catArticle);
+  });
+
+  console.log(data);
+};
+
+const addCatToFav = async (id) => {
+  const response = await fetch(`${CAT_API}favourites?api_key=${API_KEY}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      image_id: id,
+    }),
+  });
+  console.log("Gato ingresado a favoritos");
+  if (response.status !== 200) {
+    error.innerHTML = "Hubo un error en random " + response.status;
+  } else {
+    loadFavouriteCats();
+  }
+};
+
+const removeCatfromFav = async (id) => {
+  const response = await fetch(
+    `${CAT_API}favourites/${id}?api_key=${API_KEY}`,
+    {
+      method: "DELETE",
+    }
+  );
+  console.log("Gato retirado de favoritos");
+  if (response.status !== 200) {
+    error.innerHTML = "Hubo un error en favourites " + response.status;
+  } else {
+    loadFavouriteCats();
+  }
 };
 
 loadRandomCats();
+loadFavouriteCats();
