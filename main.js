@@ -6,7 +6,7 @@ const error = document.getElementById("error");
 
 const loadRandomCats = async () => {
   const response = await fetch(
-    `${CAT_API}images/search?limit=3&api_key${API_KEY}`
+    `${CAT_API}images/search?limit=4&api_key${API_KEY}`
   );
   const data = await response.json();
 
@@ -20,6 +20,7 @@ const loadRandomCats = async () => {
       const catImg = document.createElement("img");
       catImg.width = 350;
       catImg.src = cat.url;
+      catImg.loading = "lazy";
 
       const catBtn = document.createElement("button");
       const btnText = document.createTextNode("Guardar en favoritos");
@@ -37,38 +38,43 @@ const loadRandomCats = async () => {
 };
 
 const loadFavouriteCats = async () => {
-  const response = await fetch(`${CAT_API}favourites?api_key=${API_KEY}`);
+  const response = await fetch(`${CAT_API}favourites?`, {
+    method: "GET",
+    headers: {
+      "X-API-KEY": API_KEY,
+    },
+  });
   const data = await response.json();
 
   if (response.status === 200) {
+    const favouriteCats = document.querySelector(".favouriteCats__cards");
+    favouriteCats.innerHTML = "";
+    data.forEach((cat) => {
+      const catArticle = document.createElement("article");
+      const catImg = document.createElement("img");
+      const catBtn = document.createElement("button");
+      const btnText = document.createTextNode("Quitar de favoritos");
+      catImg.src = cat.image.url;
+      catImg.width = 350;
+      catImg.loading = "lazy";
+      catBtn.onclick = () => removeCatfromFav(cat.id);
+
+      catBtn.appendChild(btnText);
+      catArticle.appendChild(catImg);
+      catArticle.appendChild(catBtn);
+
+      favouriteCats.appendChild(catArticle);
+    });
   } else {
     error.innerHTML = "Hubo un error en favourites " + response.status;
   }
-
-  const favouriteCats = document.querySelector(".favouriteCats__cards");
-  favouriteCats.innerHTML = "";
-  data.forEach((cat) => {
-    const catArticle = document.createElement("article");
-    const catImg = document.createElement("img");
-    const catBtn = document.createElement("button");
-    const btnText = document.createTextNode("Quitar de favoritos");
-    catImg.src = cat.image.url;
-    catBtn.onclick = () => removeCatfromFav(cat.id);
-
-    catBtn.appendChild(btnText);
-    catArticle.appendChild(catImg);
-    catArticle.appendChild(catBtn);
-
-    favouriteCats.appendChild(catArticle);
-  });
-
-  console.log(data);
 };
 
 const addCatToFav = async (id) => {
-  const response = await fetch(`${CAT_API}favourites?api_key=${API_KEY}`, {
+  const response = await fetch(`${CAT_API}favourites?`, {
     method: "POST",
     headers: {
+      "X-API-KEY": API_KEY,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -84,12 +90,12 @@ const addCatToFav = async (id) => {
 };
 
 const removeCatfromFav = async (id) => {
-  const response = await fetch(
-    `${CAT_API}favourites/${id}?api_key=${API_KEY}`,
-    {
-      method: "DELETE",
-    }
-  );
+  const response = await fetch(`${CAT_API}favourites/${id}?`, {
+    method: "DELETE",
+    headers: {
+      "X-API-KEY": API_KEY,
+    },
+  });
   console.log("Gato retirado de favoritos");
   if (response.status !== 200) {
     error.innerHTML = "Hubo un error en favourites " + response.status;
