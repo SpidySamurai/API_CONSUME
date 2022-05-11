@@ -9,34 +9,17 @@
   </head>
   <body>
     <h1>API CONSUME BASICS</h1>
-    <button onClick="loadRandomCats()">Refresh cat</button>
+    <span id="error"> </span>
+    <button onClick="loadRandomCats()">Refresh random cats</button>
 
     <section class="randomCats" id="randomCats">
       <h2>Random cats</h2>
-      <div class="randomCats__imgs">
-        <article>
-          <img id="img-container-1" alt="cat 1" loading="lazy" />
-          <button>Guardar en favoritos</button>
-        </article>
-        <article>
-          <img id="img-container-2" alt="cat 2" loading="lazy" />
-          <button>Guardar en favoritos</button>
-        </article>
-        <article>
-          <img id="img-container-3" alt="cat 3" loading="lazy" />
-          <button>Guardar en favoritos</button>
-        </article>
-      </div>
+      <div class="randomCats__cards"></div>
     </section>
 
-    <section class="favoriteCats">
+    <section class="favouriteCats">
       <h2>Favorite cats</h2>
-      <div class="favoriteCats__imgs">
-        <article>
-          <img id="img-container-3" alt="cat 3" loading="lazy" />
-          <button>Quitar de favoritos</button>
-        </article>
-      </div>
+      <div class="favouriteCats__cards"></div>
     </section>
 
     <script src="./main.js"></script>
