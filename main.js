@@ -4,6 +4,25 @@ const API_KEY = "8b8d2f7c-74e4-47cd-83c2-b03ee2c82027";
 
 const error = document.getElementById("error");
 
+const createCatArticle = (cat, catImgUrl, onClickAction) => {
+  const catArticle = document.createElement("article");
+
+  const catImg = document.createElement("img");
+  catImg.width = 350;
+  catImg.src = catImgUrl;
+  catImg.loading = "lazy";
+
+  const catBtn = document.createElement("button");
+  const btnText = document.createTextNode("Guardar en favoritos");
+  catBtn.onclick = () => onClickAction(cat.id);
+  catBtn.appendChild(btnText);
+
+  catArticle.appendChild(catImg);
+  catArticle.appendChild(catBtn);
+
+  return catArticle;
+};
+
 const loadRandomCats = async () => {
   const response = await fetch(
     `${CAT_API}images/search?limit=4&api_key${API_KEY}`
@@ -11,25 +30,10 @@ const loadRandomCats = async () => {
   const data = await response.json();
 
   if (response.status === 200) {
-    console.log(data);
     const favouriteCats = document.querySelector(".randomCats__cards");
     favouriteCats.innerHTML = "";
     data.forEach((cat) => {
-      const catArticle = document.createElement("article");
-
-      const catImg = document.createElement("img");
-      catImg.width = 350;
-      catImg.src = cat.url;
-      catImg.loading = "lazy";
-
-      const catBtn = document.createElement("button");
-      const btnText = document.createTextNode("Guardar en favoritos");
-      catBtn.onclick = () => addCatToFav(cat.id);
-      catBtn.appendChild(btnText);
-
-      catArticle.appendChild(catImg);
-      catArticle.appendChild(catBtn);
-
+      const catArticle = createCatArticle(cat, cat.url, addCatToFav);
       favouriteCats.appendChild(catArticle);
     });
   } else {
@@ -50,18 +54,7 @@ const loadFavouriteCats = async () => {
     const favouriteCats = document.querySelector(".favouriteCats__cards");
     favouriteCats.innerHTML = "";
     data.forEach((cat) => {
-      const catArticle = document.createElement("article");
-      const catImg = document.createElement("img");
-      const catBtn = document.createElement("button");
-      const btnText = document.createTextNode("Quitar de favoritos");
-      catImg.src = cat.image.url;
-      catImg.width = 350;
-      catImg.loading = "lazy";
-      catBtn.onclick = () => removeCatfromFav(cat.id);
-
-      catBtn.appendChild(btnText);
-      catArticle.appendChild(catImg);
-      catArticle.appendChild(catBtn);
+      const catArticle = createCatArticle(cat, cat.image.url, removeCatfromFav);
 
       favouriteCats.appendChild(catArticle);
     });
