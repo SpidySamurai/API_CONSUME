@@ -43,3 +43,12 @@ article img {
   justify-content: center;
   gap: 16px;
 }
+
+.uploadingCats,
+.uploadingCats form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}

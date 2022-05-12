@@ -9,6 +9,16 @@
   </head>
   <body>
     <h1>API CONSUME BASICS</h1>
+    <section class="uploadingCats">
+      <h2>Upload a cat photo</h2>
+
+      <form class="uploadingForm">
+        <input id="file" type="file" name="file" />
+        <button type="button" onClick="uploadCat()">
+          Subir foto de un Gatito
+        </button>
+      </form>
+    </section>
     <span id="error"> </span>
     <button onClick="loadRandomCats()">Refresh random cats</button>
 

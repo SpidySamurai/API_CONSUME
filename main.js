@@ -104,5 +104,26 @@ const removeCatfromFav = async (id) => {
   }
 };
 
+const uploadCat = async () => {
+  const form = document.querySelector(".uploadingForm");
+  const formData = new FormData(form);
+
+  console.log(formData.get("file"));
+
+  const response = await fetch(`${CAT_API}images/upload`, {
+    method: "POST",
+    headers: {
+      // "Content-Type": "multipart/form-data",
+      "X-API-KEY": API_KEY,
+    },
+    body: formData,
+  });
+
+  const data = await response.json();
+  console.log(response.status);
+  console.log(data.message);
+  // addCatToFav(data.id);
+};
+
 loadRandomCats();
 loadFavouriteCats();
