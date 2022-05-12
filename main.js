@@ -4,7 +4,7 @@ const API_KEY = "8b8d2f7c-74e4-47cd-83c2-b03ee2c82027";
 
 const error = document.getElementById("error");
 
-const createCatArticle = (cat, catImgUrl, onClickAction) => {
+const createCatArticle = (cat, catImgUrl, onClickAction, onClickActionText) => {
   const catArticle = document.createElement("article");
 
   const catImg = document.createElement("img");
@@ -13,7 +13,7 @@ const createCatArticle = (cat, catImgUrl, onClickAction) => {
   catImg.loading = "lazy";
 
   const catBtn = document.createElement("button");
-  const btnText = document.createTextNode("Guardar en favoritos");
+  const btnText = document.createTextNode(onClickActionText);
   catBtn.onclick = () => onClickAction(cat.id);
   catBtn.appendChild(btnText);
 
@@ -33,7 +33,13 @@ const loadRandomCats = async () => {
     const favouriteCats = document.querySelector(".randomCats__cards");
     favouriteCats.innerHTML = "";
     data.forEach((cat) => {
-      const catArticle = createCatArticle(cat, cat.url, addCatToFav);
+      const onClickActionText = "Save in favorites";
+      const catArticle = createCatArticle(
+        cat,
+        cat.url,
+        addCatToFav,
+        onClickActionText
+      );
       favouriteCats.appendChild(catArticle);
     });
   } else {
@@ -54,7 +60,13 @@ const loadFavouriteCats = async () => {
     const favouriteCats = document.querySelector(".favouriteCats__cards");
     favouriteCats.innerHTML = "";
     data.forEach((cat) => {
-      const catArticle = createCatArticle(cat, cat.image.url, removeCatfromFav);
+      const onClickActionText = "Remove from favorites";
+      const catArticle = createCatArticle(
+        cat,
+        cat.image.url,
+        removeCatfromFav,
+        onClickActionText
+      );
 
       favouriteCats.appendChild(catArticle);
     });
